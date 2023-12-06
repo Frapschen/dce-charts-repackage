@@ -1,0 +1,16 @@
+{{ if (lookup "ghippo.io/v1alpha1" "GProductProxy" "" "") }}
+apiVersion: ghippo.io/v1alpha1
+kind: GProductProxy
+metadata:
+  name: deepflow
+spec:
+  gproduct: deepflow
+  proxies:
+    - authnCheck: false
+      destination:
+        host: {{ .Release.Name }}-grafana.{{ .Release.Namespace }}.svc.cluster.local
+        port: 80
+      match:
+        uri:
+          prefix: /deepflow-grafana
+{{ end }}
