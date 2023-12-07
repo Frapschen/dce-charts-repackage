@@ -1,7 +1,7 @@
 export USE_OPENSOURCE_CHART=false
 
 # must
-export REPO_URL=https://release-ci.daocloud.io/chartrepo/demo
+export REPO_URL=https://deepflowio.github.io/deepflow
 export REPO_NAME=deepflow
 export CHART_NAME=deepflow
 export VERSION=v6.4.004
