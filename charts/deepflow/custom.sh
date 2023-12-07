@@ -27,6 +27,11 @@ sed -i '804a\    imagePullPolicy: IfNotPresent' ./charts/deepflow/values.yaml
 sed -i '805a\    securityContext: {}' ./charts/deepflow/values.yaml
 sed -i '806G' ./charts/deepflow/values.yaml
 
+# add grafana server config
+sed -i '833a\    server:' ./charts/deepflow/values.yaml
+sed -i '834a\      root_url: "%(protocol)s://%(domain)s:%(http_port)s/deepflow-grafana"' ./charts/deepflow/values.yaml
+sed -i '835a\      serve_from_sub_path: true' ./charts/deepflow/values.yaml
+
 # add GProductProxy for grafana
 cat > ./charts/deepflow/templates/deepflow-proxy.yaml<<EOF
 {{ if (lookup "ghippo.io/v1alpha1" "GProductProxy" "" "") }}

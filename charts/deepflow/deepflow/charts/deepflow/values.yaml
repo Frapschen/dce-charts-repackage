@@ -836,6 +836,9 @@ grafana:
       password: "{{ if $.Values.global.externalMySQL.enabled }}{{$.Values.global.externalMySQL.password}}{{ else }}{{ .Values.global.password.mysql }}{{end}}"
     plugins:
       allow_loading_unsigned_plugins: deepflow-querier-datasource,deepflow-apptracing-panel,deepflow-topo-panel,deepflowio-tracing-panel,deepflowio-deepflow-datasource,deepflowio-topo-panel
+    server:
+      root_url: "%(protocol)s://%(domain)s:%(http_port)s/deepflow-grafana"
+      serve_from_sub_path: true
 
   extraInitContainers:
     - name: init-custom-plugins
