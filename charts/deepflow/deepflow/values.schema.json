@@ -1,0 +1,2307 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome4",
+  "definitions": {
+    "Welcome4": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "global": {
+          "$ref": "#/definitions/Global"
+        },
+        "deepflow": {
+          "$ref": "#/definitions/Deepflow"
+        }
+      },
+      "required": [
+        "deepflow",
+        "global"
+      ],
+      "title": "Deepflow"
+    },
+    "Deepflow": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "image": {
+          "$ref": "#/definitions/DeepflowImage"
+        },
+        "imagePullSecrets": {
+          "type": "array",
+          "items": {}
+        },
+        "nameOverride": {
+          "type": "string"
+        },
+        "fullnameOverride": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "podAnnotations": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "podSecurityContext": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "securityContext": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "server": {
+          "$ref": "#/definitions/DeepflowServer"
+        },
+        "app": {
+          "$ref": "#/definitions/DeepflowApp"
+        },
+        "tolerations": {
+          "type": "array",
+          "items": {}
+        },
+        "config": {
+          "$ref": "#/definitions/Config"
+        },
+        "configmap": {
+          "$ref": "#/definitions/Configmap"
+        },
+        "clickhouse": {
+          "$ref": "#/definitions/DeepflowClickhouse"
+        },
+        "mysql": {
+          "$ref": "#/definitions/DeepflowMysql"
+        },
+        "deepflow-agent": {
+          "$ref": "#/definitions/DeepflowAgent"
+        },
+        "grafana": {
+          "$ref": "#/definitions/Grafana"
+        }
+      },
+      "required": [
+        "app",
+        "clickhouse",
+        "config",
+        "configmap",
+        "deepflow-agent",
+        "fullnameOverride",
+        "grafana",
+        "image",
+        "imagePullSecrets",
+        "mysql",
+        "nameOverride",
+        "podAnnotations",
+        "podSecurityContext",
+        "securityContext",
+        "server",
+        "timezone",
+        "tolerations"
+      ],
+      "title": "Deepflow"
+    },
+    "DeepflowApp": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "replicas": {
+          "type": "string",
+          "format": "integer"
+        },
+        "podLabels": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "hostNetwork": {
+          "type": "string"
+        },
+        "dnsPolicy": {
+          "type": "string"
+        },
+        "readinessProbe": {
+          "$ref": "#/definitions/NessProbe"
+        },
+        "livenessProbe": {
+          "$ref": "#/definitions/NessProbe"
+        },
+        "service": {
+          "$ref": "#/definitions/AppService"
+        },
+        "resources": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "podAntiAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAntiAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        }
+      },
+      "required": [
+        "dnsPolicy",
+        "hostNetwork",
+        "livenessProbe",
+        "nodeAffinityLabelSelector",
+        "nodeAffinityTermLabelSelector",
+        "nodeSelector",
+        "podAffinityLabelSelector",
+        "podAffinityTermLabelSelector",
+        "podAntiAffinityLabelSelector",
+        "podAntiAffinityTermLabelSelector",
+        "podLabels",
+        "readinessProbe",
+        "replicas",
+        "resources",
+        "service"
+      ],
+      "title": "DeepflowApp"
+    },
+    "NessProbe": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "failureThreshold": {
+          "type": "integer"
+        },
+        "initialDelaySeconds": {
+          "type": "integer"
+        },
+        "periodSeconds": {
+          "type": "integer"
+        },
+        "successThreshold": {
+          "type": "integer"
+        },
+        "tcpSocket": {
+          "$ref": "#/definitions/TCPSocket"
+        },
+        "timeoutSeconds": {
+          "type": "integer"
+        },
+        "httpGet": {
+          "$ref": "#/definitions/HTTPGet"
+        }
+      },
+      "required": [
+        "failureThreshold",
+        "initialDelaySeconds",
+        "periodSeconds",
+        "successThreshold"
+      ],
+      "title": "NessProbe"
+    },
+    "HTTPGet": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "port"
+      ],
+      "title": "HTTPGet"
+    },
+    "TCPSocket": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "port": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "port"
+      ],
+      "title": "TCPSocket"
+    },
+    "PodAnnotations": {
+      "type": "object",
+      "additionalProperties": true,
+      "title": "PodAnnotations"
+    },
+    "AppService": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "annotations": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "labels": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "clusterIP": {
+          "type": "string"
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PurplePort"
+          }
+        },
+        "additionalPorts": {
+          "type": "array",
+          "items": {}
+        },
+        "externalIPs": {
+          "type": "array",
+          "items": {}
+        },
+        "loadBalancerIP": {
+          "type": "string"
+        },
+        "loadBalancerSourceRanges": {
+          "type": "array",
+          "items": {}
+        },
+        "externalTrafficPolicy": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "additionalPorts",
+        "annotations",
+        "clusterIP",
+        "externalIPs",
+        "externalTrafficPolicy",
+        "labels",
+        "loadBalancerIP",
+        "loadBalancerSourceRanges",
+        "ports",
+        "type"
+      ],
+      "title": "AppService"
+    },
+    "PurplePort": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "targetPort": {
+          "type": "integer"
+        },
+        "nodePort": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "protocol": {
+          "$ref": "#/definitions/Protocol"
+        }
+      },
+      "required": [
+        "name",
+        "nodePort",
+        "port",
+        "protocol",
+        "targetPort"
+      ],
+      "title": "PurplePort"
+    },
+    "DeepflowClickhouse": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "replicas": {
+          "type": "string"
+        },
+        "hostNetwork": {
+          "type": "string"
+        },
+        "dnsPolicy": {
+          "type": "string"
+        },
+        "podManagementPolicy": {
+          "type": "string"
+        },
+        "image": {
+          "$ref": "#/definitions/AppClass"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "imagePullSecrets": {
+          "type": "array",
+          "items": {}
+        },
+        "nameOverride": {
+          "type": "string"
+        },
+        "fullnameOverride": {
+          "type": "string"
+        },
+        "podAnnotations": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "podSecurityContext": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "securityContext": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "storageConfig": {
+          "$ref": "#/definitions/ClickhouseStorageConfig"
+        },
+        "clickhouse": {
+          "$ref": "#/definitions/ClickhouseClickhouse"
+        },
+        "service": {
+          "$ref": "#/definitions/AppService"
+        },
+        "resources": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "tolerations": {
+          "type": "array",
+          "items": {}
+        },
+        "podAntiAffinityLabelSelector": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PodAntiAffinityLabelSelector"
+          }
+        },
+        "podAntiAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PodAffinityTermLabelSelector"
+          }
+        },
+        "nodeAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        }
+      },
+      "required": [
+        "clickhouse",
+        "dnsPolicy",
+        "enabled",
+        "fullnameOverride",
+        "hostNetwork",
+        "image",
+        "imagePullSecrets",
+        "nameOverride",
+        "nodeAffinityLabelSelector",
+        "nodeAffinityTermLabelSelector",
+        "nodeSelector",
+        "podAffinityLabelSelector",
+        "podAffinityTermLabelSelector",
+        "podAnnotations",
+        "podAntiAffinityLabelSelector",
+        "podAntiAffinityTermLabelSelector",
+        "podManagementPolicy",
+        "podSecurityContext",
+        "replicas",
+        "resources",
+        "securityContext",
+        "service",
+        "storageConfig",
+        "timezone",
+        "tolerations"
+      ],
+      "title": "DeepflowClickhouse"
+    },
+    "ClickhouseClickhouse": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "interserverHttpPort": {
+          "type": "integer"
+        },
+        "maxConcurrentQueries": {
+          "type": "integer"
+        },
+        "maxMemoryUsage": {
+          "type": "integer"
+        },
+        "maxQuerySize": {
+          "type": "integer"
+        },
+        "maxAstElements": {
+          "type": "integer"
+        },
+        "maxExpandedAstElements": {
+          "type": "integer"
+        },
+        "connectTimeout": {
+          "type": "integer"
+        },
+        "backgroudPoolSize": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "backgroudPoolSize",
+        "connectTimeout",
+        "interserverHttpPort",
+        "maxAstElements",
+        "maxConcurrentQueries",
+        "maxExpandedAstElements",
+        "maxMemoryUsage",
+        "maxQuerySize"
+      ],
+      "title": "ClickhouseClickhouse"
+    },
+    "AppClass": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "registry": {
+          "$ref": "#/definitions/Registry"
+        },
+        "repository": {
+          "type": "string"
+        },
+        "pullPolicy": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "sha": {
+          "type": "string"
+        },
+        "imagePullSecrets": {
+          "type": "array",
+          "items": {}
+        }
+      },
+      "required": [
+        "registry",
+        "repository"
+      ],
+      "title": "AppClass"
+    },
+    "PodAffinityTermLabelSelector": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "topologyKey": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer"
+        },
+        "labelSelector": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LabelSelector"
+          }
+        }
+      },
+      "required": [
+        "labelSelector",
+        "topologyKey",
+        "weight"
+      ],
+      "title": "PodAffinityTermLabelSelector"
+    },
+    "LabelSelector": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "operator": {
+          "type": "string"
+        },
+        "values": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "operator",
+        "values"
+      ],
+      "title": "LabelSelector"
+    },
+    "PodAntiAffinityLabelSelector": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "labelSelector": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LabelSelector"
+          }
+        },
+        "topologyKey": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "labelSelector",
+        "topologyKey"
+      ],
+      "title": "PodAntiAffinityLabelSelector"
+    },
+    "ClickhouseStorageConfig": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "generateType": {
+          "type": "string"
+        },
+        "hostPath": {
+          "type": "string"
+        },
+        "persistence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PersistenceElement"
+          }
+        },
+        "s3StorageEnabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "generateType",
+        "hostPath",
+        "persistence",
+        "s3StorageEnabled",
+        "type"
+      ],
+      "title": "ClickhouseStorageConfig"
+    },
+    "PersistenceElement": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "accessModes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "size": {
+          "type": "string"
+        },
+        "annotations": {
+          "type": "null"
+        },
+        "storageClass": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "accessModes",
+        "annotations",
+        "name",
+        "size",
+        "storageClass"
+      ],
+      "title": "PersistenceElement"
+    },
+    "Config": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "tridentTypeForUnkonwVtap": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "tridentTypeForUnkonwVtap"
+      ],
+      "title": "Config"
+    },
+    "Configmap": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "server.yaml": {
+          "$ref": "#/definitions/ServerYAML"
+        },
+        "app.yaml": {
+          "$ref": "#/definitions/AppYAML"
+        }
+      },
+      "required": [
+        "app.yaml",
+        "server.yaml"
+      ],
+      "title": "Configmap"
+    },
+    "AppYAML": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "app": {
+          "$ref": "#/definitions/AppYAMLApp"
+        }
+      },
+      "required": [
+        "app"
+      ],
+      "title": "AppYAML"
+    },
+    "AppYAMLApp": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "log-file": {
+          "type": "string"
+        },
+        "log-level": {
+          "type": "string"
+        },
+        "listen-port": {
+          "type": "integer"
+        },
+        "http_request_timeout": {
+          "type": "integer"
+        },
+        "http_response_timeout": {
+          "type": "integer"
+        },
+        "querier": {
+          "$ref": "#/definitions/QuerierClass"
+        },
+        "controller": {
+          "$ref": "#/definitions/QuerierClass"
+        },
+        "spec": {
+          "$ref": "#/definitions/Spec"
+        }
+      },
+      "required": [
+        "controller",
+        "http_request_timeout",
+        "http_response_timeout",
+        "listen-port",
+        "log-file",
+        "log-level",
+        "querier",
+        "spec"
+      ],
+      "title": "AppYAMLApp"
+    },
+    "QuerierClass": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "timeout": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "host",
+        "port",
+        "timeout"
+      ],
+      "title": "QuerierClass"
+    },
+    "Spec": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "l7_tracing_limit": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "l7_tracing_limit"
+      ],
+      "title": "Spec"
+    },
+    "ServerYAML": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "log-file": {
+          "type": "string"
+        },
+        "log-level": {
+          "type": "string"
+        },
+        "controller": {
+          "$ref": "#/definitions/ServerYAMLController"
+        },
+        "querier": {
+          "$ref": "#/definitions/Querier"
+        },
+        "ingester": {
+          "$ref": "#/definitions/Ingester"
+        }
+      },
+      "required": [
+        "controller",
+        "ingester",
+        "log-file",
+        "log-level",
+        "querier"
+      ],
+      "title": "ServerYAML"
+    },
+    "ServerYAMLController": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "listen-port": {
+          "type": "integer"
+        },
+        "grpc-port": {
+          "type": "integer"
+        },
+        "grpc-max-message-length": {
+          "type": "integer"
+        },
+        "kubeconfig": {
+          "type": "string"
+        },
+        "election-namespace": {
+          "type": "string"
+        },
+        "election-name": {
+          "type": "string"
+        },
+        "mysql": {
+          "$ref": "#/definitions/ControllerMysql"
+        },
+        "clickhouse": {
+          "$ref": "#/definitions/ControllerClickhouse"
+        },
+        "trisolaris": {
+          "$ref": "#/definitions/Trisolaris"
+        }
+      },
+      "required": [
+        "clickhouse",
+        "election-name",
+        "election-namespace",
+        "grpc-max-message-length",
+        "grpc-port",
+        "kubeconfig",
+        "listen-port",
+        "mysql",
+        "trisolaris"
+      ],
+      "title": "ServerYAMLController"
+    },
+    "ControllerClickhouse": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "database": {
+          "type": "string"
+        },
+        "user-name": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "host": {
+          "type": "string"
+        },
+        "user-password": {
+          "type": "string"
+        },
+        "timeout": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "database",
+        "host",
+        "port",
+        "user-name",
+        "user-password"
+      ],
+      "title": "ControllerClickhouse"
+    },
+    "ControllerMysql": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "database": {
+          "type": "string"
+        },
+        "user-name": {
+          "type": "string"
+        },
+        "user-password": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        },
+        "timeout": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "database",
+        "host",
+        "port",
+        "timeout",
+        "user-name",
+        "user-password"
+      ],
+      "title": "ControllerMysql"
+    },
+    "Trisolaris": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "chrony": {
+          "$ref": "#/definitions/QuerierClass"
+        },
+        "trident-type-for-unkonw-vtap": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "chrony",
+        "trident-type-for-unkonw-vtap"
+      ],
+      "title": "Trisolaris"
+    },
+    "Ingester": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "ckdb": {
+          "$ref": "#/definitions/Ckdb"
+        },
+        "ckdb-auth": {
+          "$ref": "#/definitions/CkdbAuth"
+        },
+        "es-syslog": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "ckdb",
+        "ckdb-auth",
+        "es-syslog"
+      ],
+      "title": "Ingester"
+    },
+    "Ckdb": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "external": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "cluster-name": {
+          "type": "string"
+        },
+        "storage-policy": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cluster-name",
+        "external",
+        "host",
+        "port",
+        "storage-policy"
+      ],
+      "title": "Ckdb"
+    },
+    "CkdbAuth": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "password",
+        "username"
+      ],
+      "title": "CkdbAuth"
+    },
+    "Querier": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "listen-port": {
+          "type": "integer"
+        },
+        "clickhouse": {
+          "$ref": "#/definitions/ControllerClickhouse"
+        },
+        "deepflow-app": {
+          "$ref": "#/definitions/DeepflowAppClass"
+        }
+      },
+      "required": [
+        "clickhouse",
+        "deepflow-app",
+        "listen-port"
+      ],
+      "title": "Querier"
+    },
+    "DeepflowAppClass": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "host",
+        "port"
+      ],
+      "title": "DeepflowAppClass"
+    },
+    "DeepflowAgent": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "image": {
+          "$ref": "#/definitions/AppClass"
+        },
+        "imagePullSecrets": {
+          "type": "array",
+          "items": {}
+        },
+        "nameOverride": {
+          "type": "string"
+        },
+        "agentFullnameOverride": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "deployComponent": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tke_sidecar": {
+          "type": "boolean"
+        },
+        "podAnnotations": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "nodeIPInjection": {
+          "type": "boolean"
+        },
+        "podSecurityContext": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "hostNetwork": {
+          "type": "string",
+          "format": "boolean"
+        },
+        "netns": {
+          "$ref": "#/definitions/Netns"
+        },
+        "extraVolumeMounts": {
+          "type": "array",
+          "items": {}
+        },
+        "securityContext": {
+          "$ref": "#/definitions/SecurityContext"
+        },
+        "sysctlInitContainer": {
+          "$ref": "#/definitions/SysctlInitContainer"
+        },
+        "service": {
+          "$ref": "#/definitions/DeepflowAgentService"
+        },
+        "deepflowServerNodeIPS": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "kubernetesClusterId": {
+          "type": "string"
+        },
+        "agentGroupID": {
+          "type": "null"
+        },
+        "externalAgentHttpProxyPort": {
+          "type": "integer"
+        },
+        "resources": {
+          "$ref": "#/definitions/Resources"
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "tolerations": {
+          "type": "array",
+          "items": {}
+        },
+        "podAntiAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAntiAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        }
+      },
+      "required": [
+        "agentFullnameOverride",
+        "agentGroupID",
+        "deepflowServerNodeIPS",
+        "deployComponent",
+        "enabled",
+        "externalAgentHttpProxyPort",
+        "extraVolumeMounts",
+        "hostNetwork",
+        "image",
+        "imagePullSecrets",
+        "kubernetesClusterId",
+        "nameOverride",
+        "netns",
+        "nodeAffinityLabelSelector",
+        "nodeAffinityTermLabelSelector",
+        "nodeIPInjection",
+        "nodeSelector",
+        "podAffinityLabelSelector",
+        "podAffinityTermLabelSelector",
+        "podAnnotations",
+        "podAntiAffinityLabelSelector",
+        "podAntiAffinityTermLabelSelector",
+        "podSecurityContext",
+        "resources",
+        "securityContext",
+        "service",
+        "sysctlInitContainer",
+        "timezone",
+        "tke_sidecar",
+        "tolerations"
+      ],
+      "title": "DeepflowAgent"
+    },
+    "Netns": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "mount": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "mount"
+      ],
+      "title": "Netns"
+    },
+    "Resources": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "limits": {
+          "$ref": "#/definitions/Limits"
+        },
+        "requests": {
+          "$ref": "#/definitions/Limits"
+        }
+      },
+      "required": [
+        "limits",
+        "requests"
+      ],
+      "title": "Resources"
+    },
+    "Limits": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "cpu": {
+          "type": "string"
+        },
+        "memory": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cpu",
+        "memory"
+      ],
+      "title": "Limits"
+    },
+    "SecurityContext": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "capabilities": {
+          "$ref": "#/definitions/Capabilities"
+        }
+      },
+      "required": [
+        "capabilities"
+      ],
+      "title": "SecurityContext"
+    },
+    "Capabilities": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "add": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "add"
+      ],
+      "title": "Capabilities"
+    },
+    "DeepflowAgentService": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "annotations": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "labels": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "clusterIP": {
+          "type": "string"
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FluffyPort"
+          }
+        },
+        "additionalPorts": {
+          "type": "array",
+          "items": {}
+        },
+        "externalIPs": {
+          "type": "array",
+          "items": {}
+        },
+        "loadBalancerIP": {
+          "type": "string"
+        },
+        "loadBalancerSourceRanges": {
+          "type": "array",
+          "items": {}
+        },
+        "externalTrafficPolicy": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "additionalPorts",
+        "annotations",
+        "clusterIP",
+        "externalIPs",
+        "externalTrafficPolicy",
+        "labels",
+        "loadBalancerIP",
+        "loadBalancerSourceRanges",
+        "ports",
+        "type"
+      ],
+      "title": "DeepflowAgentService"
+    },
+    "FluffyPort": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "targetPort": {
+          "type": "string"
+        },
+        "nodePort": {
+          "type": "null"
+        },
+        "protocol": {
+          "$ref": "#/definitions/Protocol"
+        }
+      },
+      "required": [
+        "name",
+        "nodePort",
+        "port",
+        "protocol",
+        "targetPort"
+      ],
+      "title": "FluffyPort"
+    },
+    "SysctlInitContainer": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "title": "SysctlInitContainer"
+    },
+    "Grafana": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "namespaceOverride": {
+          "type": "string"
+        },
+        "forceDeployDatasources": {
+          "type": "boolean"
+        },
+        "forceDeployDashboards": {
+          "type": "boolean"
+        },
+        "defaultDashboardsEnabled": {
+          "type": "boolean"
+        },
+        "defaultDashboardsTimezone": {
+          "type": "string"
+        },
+        "adminPassword": {
+          "type": "string"
+        },
+        "containerSecurityContext": {
+          "type": "array",
+          "items": {}
+        },
+        "image": {
+          "$ref": "#/definitions/AppClass"
+        },
+        "testFramework": {
+          "$ref": "#/definitions/TestFramework"
+        },
+        "service": {
+          "$ref": "#/definitions/GrafanaService"
+        },
+        "rbac": {
+          "$ref": "#/definitions/Rbac"
+        },
+        "grafana.ini": {
+          "$ref": "#/definitions/GrafanaIni"
+        },
+        "extraInitContainers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExtraInitContainer"
+          }
+        },
+        "extraEmptyDirMounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Mount"
+          }
+        },
+        "env": {
+          "$ref": "#/definitions/Env"
+        },
+        "ingress": {
+          "$ref": "#/definitions/Ingress"
+        }
+      },
+      "required": [
+        "adminPassword",
+        "containerSecurityContext",
+        "defaultDashboardsEnabled",
+        "defaultDashboardsTimezone",
+        "enabled",
+        "env",
+        "extraEmptyDirMounts",
+        "extraInitContainers",
+        "forceDeployDashboards",
+        "forceDeployDatasources",
+        "grafana.ini",
+        "image",
+        "ingress",
+        "namespaceOverride",
+        "rbac",
+        "service",
+        "testFramework"
+      ],
+      "title": "Grafana"
+    },
+    "Env": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "TZ": {
+          "type": "string"
+        },
+        "DEEPFLOW_REQUEST_URL": {
+          "type": "string"
+        },
+        "DEEPFLOW_TRACEURL": {
+          "type": "string"
+        },
+        "MYSQL_URL": {
+          "type": "string"
+        },
+        "MYSQL_USER": {
+          "type": "string"
+        },
+        "MYSQL_PASSWORD": {
+          "type": "string"
+        },
+        "CLICKHOUSE_SERVER": {
+          "type": "string"
+        },
+        "CLICKHOUSE_USER": {
+          "type": "string"
+        },
+        "CLICKHOUSE_PASSWORD": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "CLICKHOUSE_PASSWORD",
+        "CLICKHOUSE_SERVER",
+        "CLICKHOUSE_USER",
+        "DEEPFLOW_REQUEST_URL",
+        "DEEPFLOW_TRACEURL",
+        "MYSQL_PASSWORD",
+        "MYSQL_URL",
+        "MYSQL_USER",
+        "TZ"
+      ],
+      "title": "Env"
+    },
+    "Mount": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "mountPath": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "mountPath",
+        "name"
+      ],
+      "title": "Mount"
+    },
+    "ExtraInitContainer": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "imagePullPolicy": {
+          "type": "string"
+        },
+        "volumeMounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Mount"
+          }
+        }
+      },
+      "required": [
+        "image",
+        "imagePullPolicy",
+        "name",
+        "volumeMounts"
+      ],
+      "title": "ExtraInitContainer"
+    },
+    "GrafanaIni": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "paths": {
+          "$ref": "#/definitions/Paths"
+        },
+        "analytics": {
+          "$ref": "#/definitions/Analytics"
+        },
+        "log": {
+          "$ref": "#/definitions/Log"
+        },
+        "database": {
+          "$ref": "#/definitions/Database"
+        },
+        "plugins": {
+          "$ref": "#/definitions/Plugins"
+        },
+        "server": {
+          "$ref": "#/definitions/GrafanaIniServer"
+        }
+      },
+      "required": [
+        "analytics",
+        "database",
+        "log",
+        "paths",
+        "plugins",
+        "server"
+      ],
+      "title": "GrafanaIni"
+    },
+    "Analytics": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "check_for_updates": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "check_for_updates"
+      ],
+      "title": "Analytics"
+    },
+    "Database": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "host",
+        "name",
+        "password",
+        "type",
+        "user"
+      ],
+      "title": "Database"
+    },
+    "Log": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "mode": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "title": "Log"
+    },
+    "Paths": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "plugins": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "plugins"
+      ],
+      "title": "Paths"
+    },
+    "Plugins": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "allow_loading_unsigned_plugins": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "allow_loading_unsigned_plugins"
+      ],
+      "title": "Plugins"
+    },
+    "GrafanaIniServer": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "root_url": {
+          "type": "string"
+        },
+        "serve_from_sub_path": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "root_url",
+        "serve_from_sub_path"
+      ],
+      "title": "GrafanaIniServer"
+    },
+    "Ingress": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "annotations": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "labels": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "path": {
+          "type": "string"
+        },
+        "pathType": {
+          "type": "string"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "extraPaths": {
+          "type": "array",
+          "items": {}
+        },
+        "tls": {
+          "type": "array",
+          "items": {}
+        }
+      },
+      "required": [
+        "annotations",
+        "enabled",
+        "extraPaths",
+        "hosts",
+        "labels",
+        "path",
+        "pathType",
+        "tls"
+      ],
+      "title": "Ingress"
+    },
+    "Rbac": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "create": {
+          "type": "boolean"
+        },
+        "pspEnabled": {
+          "type": "boolean"
+        },
+        "namespaced": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "create",
+        "namespaced",
+        "pspEnabled"
+      ],
+      "title": "Rbac"
+    },
+    "GrafanaService": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "enabled",
+        "type"
+      ],
+      "title": "GrafanaService"
+    },
+    "TestFramework": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "image": {
+          "$ref": "#/definitions/AppClass"
+        },
+        "imagePullPolicy": {
+          "type": "string"
+        },
+        "securityContext": {
+          "$ref": "#/definitions/PodAnnotations"
+        }
+      },
+      "required": [
+        "enabled",
+        "image",
+        "imagePullPolicy",
+        "securityContext"
+      ],
+      "title": "TestFramework"
+    },
+    "DeepflowImage": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "server": {
+          "$ref": "#/definitions/AppClass"
+        },
+        "app": {
+          "$ref": "#/definitions/AppClass"
+        }
+      },
+      "required": [
+        "app",
+        "server"
+      ],
+      "title": "DeepflowImage"
+    },
+    "DeepflowMysql": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "hostNetwork": {
+          "type": "string",
+          "format": "boolean"
+        },
+        "dnsPolicy": {
+          "type": "string"
+        },
+        "imagePullSecrets": {
+          "type": "array",
+          "items": {}
+        },
+        "nameOverride": {
+          "type": "string"
+        },
+        "fullnameOverride": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "podAnnotations": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "image": {
+          "$ref": "#/definitions/AppClass"
+        },
+        "podSecurityContext": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "securityContext": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "storageConfig": {
+          "$ref": "#/definitions/MysqlStorageConfig"
+        },
+        "service": {
+          "$ref": "#/definitions/AppService"
+        },
+        "resources": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "tolerations": {
+          "type": "array",
+          "items": {}
+        },
+        "podAntiAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAntiAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        }
+      },
+      "required": [
+        "dnsPolicy",
+        "enabled",
+        "fullnameOverride",
+        "hostNetwork",
+        "image",
+        "imagePullSecrets",
+        "nameOverride",
+        "nodeAffinityLabelSelector",
+        "nodeAffinityTermLabelSelector",
+        "nodeSelector",
+        "password",
+        "podAffinityLabelSelector",
+        "podAffinityTermLabelSelector",
+        "podAnnotations",
+        "podAntiAffinityLabelSelector",
+        "podAntiAffinityTermLabelSelector",
+        "podSecurityContext",
+        "resources",
+        "securityContext",
+        "service",
+        "storageConfig",
+        "timezone",
+        "tolerations"
+      ],
+      "title": "DeepflowMysql"
+    },
+    "MysqlStorageConfig": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "generateType": {
+          "type": "string"
+        },
+        "hostPath": {
+          "type": "string"
+        },
+        "hostPathChownContainerEnabled": {
+          "type": "boolean"
+        },
+        "persistence": {
+          "$ref": "#/definitions/PurplePersistence"
+        }
+      },
+      "required": [
+        "generateType",
+        "hostPath",
+        "hostPathChownContainerEnabled",
+        "persistence",
+        "type"
+      ],
+      "title": "MysqlStorageConfig"
+    },
+    "PurplePersistence": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "storageClass": {
+          "type": "string"
+        },
+        "annotations": {
+          "$ref": "#/definitions/Annotations"
+        },
+        "accessMode": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "accessMode",
+        "annotations",
+        "size",
+        "storageClass"
+      ],
+      "title": "PurplePersistence"
+    },
+    "Annotations": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "helm.sh/resource-policy": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "helm.sh/resource-policy"
+      ],
+      "title": "Annotations"
+    },
+    "DeepflowServer": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "podLabels": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "replicas": {
+          "type": "string"
+        },
+        "hostNetwork": {
+          "type": "string"
+        },
+        "dnsPolicy": {
+          "type": "string"
+        },
+        "podManagementPolicy": {
+          "type": "string"
+        },
+        "featureFlag": {
+          "type": "array",
+          "items": {}
+        },
+        "readinessProbe": {
+          "$ref": "#/definitions/NessProbe"
+        },
+        "livenessProbe": {
+          "$ref": "#/definitions/NessProbe"
+        },
+        "service": {
+          "$ref": "#/definitions/AppService"
+        },
+        "resources": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/PodAnnotations"
+        },
+        "podAntiAffinityLabelSelector": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PodAntiAffinityLabelSelector"
+          }
+        },
+        "podAntiAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "extraVolumeMounts": {
+          "type": "array",
+          "items": {}
+        }
+      },
+      "required": [
+        "dnsPolicy",
+        "extraVolumeMounts",
+        "featureFlag",
+        "hostNetwork",
+        "livenessProbe",
+        "nodeAffinityLabelSelector",
+        "nodeAffinityTermLabelSelector",
+        "nodeSelector",
+        "podAffinityLabelSelector",
+        "podAffinityTermLabelSelector",
+        "podAntiAffinityLabelSelector",
+        "podAntiAffinityTermLabelSelector",
+        "podLabels",
+        "podManagementPolicy",
+        "readinessProbe",
+        "replicas",
+        "resources",
+        "service"
+      ],
+      "title": "DeepflowServer"
+    },
+    "Global": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "image": {
+          "$ref": "#/definitions/AppClass"
+        },
+        "hostNetwork": {
+          "type": "boolean"
+        },
+        "dnsPolicy": {
+          "type": "string"
+        },
+        "password": {
+          "$ref": "#/definitions/Password"
+        },
+        "podManagementPolicy": {
+          "type": "string"
+        },
+        "replicas": {
+          "type": "integer"
+        },
+        "podAntiAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAntiAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "podAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "nodeAffinityTermLabelSelector": {
+          "type": "array",
+          "items": {}
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "nodePort": {
+          "$ref": "#/definitions/NodePort"
+        },
+        "ntpServer": {
+          "type": "string"
+        },
+        "allInOneLocalStorage": {
+          "type": "boolean"
+        },
+        "storageClass": {
+          "type": "string"
+        },
+        "externalClickHouse": {
+          "$ref": "#/definitions/ExternalClickHouse"
+        },
+        "externalMySQL": {
+          "$ref": "#/definitions/ExternalMySQL"
+        },
+        "grafanaInitContainer": {
+          "$ref": "#/definitions/GrafanaInitContainer"
+        }
+      },
+      "required": [
+        "allInOneLocalStorage",
+        "dnsPolicy",
+        "externalClickHouse",
+        "externalMySQL",
+        "grafanaInitContainer",
+        "hostNetwork",
+        "image",
+        "nodeAffinityLabelSelector",
+        "nodeAffinityTermLabelSelector",
+        "nodePort",
+        "ntpServer",
+        "password",
+        "podAffinityLabelSelector",
+        "podAffinityTermLabelSelector",
+        "podAntiAffinityLabelSelector",
+        "podAntiAffinityTermLabelSelector",
+        "podManagementPolicy",
+        "replicas",
+        "storageClass",
+        "timezone"
+      ],
+      "title": "Global"
+    },
+    "ExternalClickHouse": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string"
+        },
+        "clusterName": {
+          "type": "string"
+        },
+        "storagePolicy": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {}
+        }
+      },
+      "required": [
+        "clusterName",
+        "enabled",
+        "hosts",
+        "password",
+        "storagePolicy",
+        "type",
+        "username"
+      ],
+      "title": "ExternalClickHouse"
+    },
+    "ExternalMySQL": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "username": {
+          "type": "null"
+        },
+        "password": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "enabled",
+        "ip",
+        "password",
+        "port",
+        "username"
+      ],
+      "title": "ExternalMySQL"
+    },
+    "GrafanaInitContainer": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "initCustomPlugins": {
+          "$ref": "#/definitions/Init"
+        },
+        "initGrafanaDsDh": {
+          "$ref": "#/definitions/Init"
+        }
+      },
+      "required": [
+        "initCustomPlugins",
+        "initGrafanaDsDh"
+      ],
+      "title": "GrafanaInitContainer"
+    },
+    "Init": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "image": {
+          "$ref": "#/definitions/AppClass"
+        }
+      },
+      "required": [
+        "image"
+      ],
+      "title": "Init"
+    },
+    "NodePort": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "clickhouseTcpPort": {
+          "type": "null"
+        },
+        "clickhouseHttpPort": {
+          "type": "null"
+        },
+        "deepflowServerIngester": {
+          "type": "integer"
+        },
+        "deepflowServerGrpc": {
+          "type": "integer"
+        },
+        "deepflowServerhealthCheck": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "clickhouseHttpPort",
+        "clickhouseTcpPort",
+        "deepflowServerGrpc",
+        "deepflowServerIngester",
+        "deepflowServerhealthCheck"
+      ],
+      "title": "NodePort"
+    },
+    "Password": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "mysql": {
+          "type": "string"
+        },
+        "clickhouse": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "clickhouse",
+        "mysql"
+      ],
+      "title": "Password"
+    },
+    "Protocol": {
+      "type": "string",
+      "enum": [
+        "TCP"
+      ],
+      "title": "Protocol"
+    },
+    "Registry": {
+      "type": "string",
+      "enum": [
+        "docker.m.daocloud.io"
+      ],
+      "title": "Registry"
+    }
+  }
+}

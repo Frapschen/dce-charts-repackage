@@ -323,7 +323,7 @@ deepflow:
         # grpc max message lenth default 100M
         grpc-max-message-length: 104857600
         # kubeconfig
-        kubeconfig:
+        kubeconfig: ""
         # election
         election-namespace: "{{ $.Release.Namespace }}"
         election-name: "{{ $.Release.Name }}-server"
@@ -582,7 +582,7 @@ deepflow:
     podSecurityContext: {}
     # fsGroup: 2000
 
-    securityContext:
+    securityContext: {}
     ## If your mysql cannot start with hostPath, please open Privileged
     ## 如果你的mysql使用hostPath无法启动，请打开privileged
     # privileged: true
@@ -755,7 +755,7 @@ deepflow:
 
     deepflowServerNodeIPS:
       - '{{ include "deepflow.fullname" . }}-server'
-    kubernetesClusterId:
+    kubernetesClusterId: ""
     agentGroupID:
     ## This command takes effect when agent-group-config external_agent_http_proxy_enabled=1 is configured using deepflow-ctl
     ## Set the port to the agent-group-config port
