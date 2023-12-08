@@ -20,5 +20,3 @@ export DAOCLOUD_REPO_PROJECT=community
 # NO_TRIVY
 export NO_TRIVY=true
 
-# SKIP_SCHEMA
-SKIP_SCHEMA=true
