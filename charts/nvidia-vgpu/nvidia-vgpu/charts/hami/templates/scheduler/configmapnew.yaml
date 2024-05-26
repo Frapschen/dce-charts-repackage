@@ -41,8 +41,6 @@ data:
         ignoredByScheduler: true
       - name: {{ .Values.mluResourceName }}
         ignoredByScheduler: true
-      - name: {{ .Values.mluResourceMem }}
-        ignoredByScheduler: true
       - name: {{ .Values.dcuResourceName }}
         ignoredByScheduler: true
       - name: {{ .Values.dcuResourceMem }}
@@ -50,5 +48,9 @@ data:
       - name: {{ .Values.dcuResourceCores }}
         ignoredByScheduler: true
       - name: {{ .Values.iluvatarResourceName }}
+        ignoredByScheduler: true
+      - name: {{ .Values.ascendResourceMem }}
+        ignoredByScheduler: true
+      - name: {{ .Values.ascendResourceName }}
         ignoredByScheduler: true
 {{- end }}

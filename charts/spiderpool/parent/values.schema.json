@@ -23,6 +23,19 @@
                         }
                     }
                 },
+                 "grafanaDashboard": {
+                    "title": "GrafanaDashboard Setting",
+                    "type": "object",
+                    "required": [
+                        "install"
+                    ],
+                    "install": {
+                        "type": "boolean",
+                        "title": "Install GrafanaDashboard",
+                        "description": "Install GrafanaDashboard for spiderpool, This requires the grafana operator CRDs to be available. Default to false",
+                        "default": false
+                    }
+                },
                 "spiderpoolAgent": {
                     "title": "Spiderpool Agent Setting",
                     "description": "spiderpool agent is a daemonset",
@@ -75,6 +88,32 @@
                                     "title": "repository",
                                     "type": "string",
                                     "default": "spidernet-io/spiderpool/spiderpool-controller"
+                                }
+                            }
+                        }
+                    }
+                },
+                "dra": {
+                    "type": "object",
+                    "description": "Dra Configuration",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Enable dra"
+                        }
+                    }
+                },
+                "netmaterial": {
+                    "type": "object",
+                    "description": "Netmaterial Image Configuration",
+                    "properties": {
+                        "image": {
+                            "type": "object",
+                            "properties": {
+                                "repository": {
+                                    "title": "repository",
+                                    "type": "string",
+                                    "default": "daocloud/netmaterial"
                                 }
                             }
                         }
