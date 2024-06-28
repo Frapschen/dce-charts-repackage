@@ -1,0 +1,251 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "core": {
+            "type": "object",
+            "properties": {
+                "GProductNavigator": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "spec": {
+                            "type": "object",
+                            "properties": {
+                                "iconUrl": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "externalPostgresql": {
+                    "type": "object",
+                    "properties": {
+                        "database": {
+                            "type": "string"
+                        },
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "host": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        },
+                        "port": {
+                            "type": "integer"
+                        },
+                        "username": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "externalConductorPostgresql": {
+                    "type": "object",
+                    "properties": {
+                        "database": {
+                            "type": "string"
+                        },
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "host": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        },
+                        "port": {
+                            "type": "integer"
+                        },
+                        "username": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "externalS3": {
+                    "type": "object",
+                    "properties": {
+                        "accessKeyId": {
+                            "type": "string"
+                        },
+                        "bucket": {
+                            "type": "string"
+                        },
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "endpoint": {
+                            "type": "string"
+                        },
+                        "forcePathStyle": {
+                            "type": "boolean"
+                        },
+                        "isPrivate": {
+                            "type": "boolean"
+                        },
+                        "publicAccessUrl": {
+                            "type": "string"
+                        },
+                        "region": {
+                            "type": "string"
+                        },
+                        "secretAccessKey": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "externalElasticsearch": {
+                    "type": "object",
+                    "properties": {
+                        "clusterHealthColor": {
+                            "type": "string"
+                        },
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "indexReplicasCount": {
+                            "type": "integer"
+                        },
+                        "password": {
+                            "type": "string"
+                        },
+                        "url": {
+                            "type": "string"
+                        },
+                        "username": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "externalRedis": {
+                    "type": "object",
+                    "properties": {
+                        "mode": {
+                            "type": "string"
+                        },
+                        "url": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "fullnameOverride": {
+                    "type": "null"
+                },
+                "llmModels": {
+                    "type": "array"
+                },
+                "server": {
+                    "type": "object",
+                    "properties": {
+                        "affinity": {
+                            "type": "object"
+                        },
+                        "auth": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "nodeSelector": {
+                            "type": "object"
+                        },
+                        "replicas": {
+                            "type": "integer"
+                        },
+                        "resources": {
+                            "type": "object"
+                        },
+                        "service": {
+                            "type": "object",
+                            "properties": {
+                                "annotations": {
+                                    "type": "object"
+                                },
+                                "clusterIP": {
+                                    "type": "string"
+                                },
+                                "labels": {
+                                    "type": "object"
+                                },
+                                "port": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "site": {
+                            "type": "object",
+                            "properties": {
+                                "appId": {
+                                    "type": "string"
+                                },
+                                "appUrl": {
+                                    "type": "string"
+                                },
+                                "customization": {
+                                    "type": "object",
+                                    "properties": {
+                                        "colors": {
+                                            "type": "object",
+                                            "properties": {
+                                                "primary": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "favicon": {
+                                            "type": "string"
+                                        },
+                                        "logo": {
+                                            "type": "object",
+                                            "properties": {
+                                                "dark": {
+                                                    "type": "string"
+                                                },
+                                                "light": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "tolerations": {
+                            "type": "array"
+                        }
+                    }
+                },
+                "service": {
+                    "type": "object",
+                    "properties": {
+                        "port": {
+                            "type": "integer"
+                        },
+                        "type": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "tools": {
+                    "type": "array"
+                }
+            }
+        }
+    }
+}
