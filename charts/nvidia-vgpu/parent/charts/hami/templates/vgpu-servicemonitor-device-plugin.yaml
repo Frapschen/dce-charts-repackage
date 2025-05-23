@@ -1,0 +1,37 @@
+{{- if .Values.scheduler.serviceMonitor.enable }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    operator.insight.io/managed-by: insight
+  name: vgpu-deivce-plugin-exporter
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  endpoints:
+  - bearerTokenSecret:
+      key: ""
+    interval: 15s
+    metricRelabelings:
+    - action: replace
+      sourceLabels:
+      - podname
+      targetLabel: exported_pod
+    - action: replace
+      sourceLabels:
+      - podnamespace
+      targetLabel: exported_namespace
+    path: /metrics
+    port: monitorport
+    relabelings:
+    - action: replace
+      sourceLabels:
+      - __meta_kubernetes_endpoint_node_name
+      targetLabel: node
+  jobLabel: app
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace | quote }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: hami-device-plugin
+{{- end }}

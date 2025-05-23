@@ -41,7 +41,7 @@ if [ $os == "Darwin" ];then
      sed -i "" "$((line+1)) i\\
       repository: kubernetes/kube-scheduler
       " values.yaml
-      sed -i "" "s/image: {{ .Values.scheduler.kubeScheduler.image }}:{{ .Values.scheduler.kubeScheduler.imageTag }}/image: \"{{ .Values.scheduler.kubeScheduler.registry }}\/{{ .Values.scheduler.kubeScheduler.repository }}:{{ .Values.scheduler.kubeScheduler.imageTag }}\"/" charts/hami/templates/scheduler/deployment.yaml
+      sed -i "" "s/image: \"{{ .Values.scheduler.kubeScheduler.image }}:{{ include \"resolvedKubeSchedulerTag\" . }}\"/image: \"{{ .Values.scheduler.kubeScheduler.registry }}\/{{ .Values.scheduler.kubeScheduler.repository }}:{{ .Values.scheduler.kubeScheduler.imageTag }}\"/" charts/hami/templates/scheduler/deployment.yaml
 elif [ $os == "Linux" ];then
      sed -i "$line"d values.yaml
      sed -i "$line i\\
@@ -50,14 +50,14 @@ elif [ $os == "Linux" ];then
      sed -i "$((line+1)) i\\
       repository: kubernetes/kube-scheduler
            " values.yaml
-    sed -i "s/image: {{ .Values.scheduler.kubeScheduler.image }}:{{ .Values.scheduler.kubeScheduler.imageTag }}/image: \"{{ .Values.scheduler.kubeScheduler.registry }}\/{{ .Values.scheduler.kubeScheduler.repository }}:{{ .Values.scheduler.kubeScheduler.imageTag }}\"/" charts/hami/templates/scheduler/deployment.yaml
+    sed -i "s/image: \"{{ .Values.scheduler.kubeScheduler.image }}:{{ include \"resolvedKubeSchedulerTag\" . }}\"/image: \"{{ .Values.scheduler.kubeScheduler.registry }}\/{{ .Values.scheduler.kubeScheduler.repository }}:{{ .Values.scheduler.kubeScheduler.imageTag }}\"/" charts/hami/templates/scheduler/deployment.yaml
 fi
 
-# set scheduler imageTag v1.20.0 to "v1.24.0"
+# set scheduler imageTag v1.20.0 to "v1.28.0"
 if [ $os == "Darwin" ];then
-        sed -i "" "s/imageTag: \"v1.20.0\"/imageTag: \"v1.24.0\"/g" values.yaml
+        sed -i "" "s/imageTag: \"v1.20.0\"/imageTag: \"v1.28.0\"/g" values.yaml
 elif [ $os == "Linux" ];then
-        sed -i "s/imageTag: \"v1.20.0\"/imageTag: \"v1.24.0\"/g" values.yaml
+        sed -i "s/imageTag: \"v1.20.0\"/imageTag: \"v1.28.0\"/g" values.yaml
 fi
 
 # sed scheduler.extender.image
@@ -92,7 +92,6 @@ if [ $os == "Darwin" ];then
      sed -i "" "$((line+1)) i\\
     repository: projecthami/hami
            " values.yaml
-     sed -i "" "s/image: {{ .Values.devicePlugin.image }}:{{ .Values.version }}/image: \"{{ .Values.devicePlugin.registry }}\/{{ .Values.devicePlugin.repository }}:{{ .Values.version }}\"/" charts/hami/templates/device-plugin/daemonsethygon.yaml
      sed -i "" "s/image: {{ .Values.devicePlugin.image }}:{{ .Values.version }}/image: \"{{ .Values.devicePlugin.registry }}\/{{ .Values.devicePlugin.repository }}:{{ .Values.version }}\"/" charts/hami/templates/device-plugin/daemonsetnvidia.yaml
 elif [ $os == "Linux" ];then
     sed -i "$line"d values.yaml
@@ -102,7 +101,6 @@ elif [ $os == "Linux" ];then
     sed -i  "$((line+1)) i\\
     repository: projecthami/hami
             " values.yaml
-    sed -i  "s/image: {{ .Values.devicePlugin.image }}:{{ .Values.version }}/image: \"{{ .Values.devicePlugin.registry }}\/{{ .Values.devicePlugin.repository }}:{{ .Values.version }}\"/" charts/hami/templates/device-plugin/daemonsethygon.yaml
     sed -i  "s/image: {{ .Values.devicePlugin.image }}:{{ .Values.version }}/image: \"{{ .Values.devicePlugin.registry }}\/{{ .Values.devicePlugin.repository }}:{{ .Values.version }}\"/" charts/hami/templates/device-plugin/daemonsetnvidia.yaml
 fi
 
@@ -217,18 +215,6 @@ line=$(sed -n -e '/volumeMounts:/=' charts/hami/templates/scheduler/deployment.y
     " charts/hami/templates/scheduler/deployment.yaml
   fi
 
-# add resoource daemonsethygon.yaml
-line=$(sed -n -e '/volumeMounts:/=' charts/hami/templates/device-plugin/daemonsethygon.yaml  | head -n 1)
-  echo "Processing line number: $line"
-  if [ $os == "Darwin" ];then
-     sed -i "" "$((line)) i\\
-          resources: {{ toYaml .Values.resources | nindent 12 }}
-      " charts/hami/templates/device-plugin/daemonsethygon.yaml
-  elif [ $os == "Linux" ];then
-    sed -i "$((line)) i\\
-          resources: {{ toYaml .Values.resources | nindent 12 }}
-    " charts/hami/templates/device-plugin/daemonsethygon.yaml
-  fi
 
 # add resources daemonsetnvidia.yaml
 line=$(sed -n -e '/volumeMounts:/=' charts/hami/templates/device-plugin/daemonsetnvidia.yaml  | head -n 1)
@@ -289,12 +275,6 @@ yq e '
     .devicePlugin.hygonImageTag="v1.0"
 ' -i charts/hami/values.yaml
 
-# update daemonsethygon.yaml image
-if [ $os == "Darwin" ];then
-   sed -i "" "s/{{ .Values.devicePlugin.hygonimage }}/\"{{ .Values.devicePlugin.registry }}\/{{ .Values.devicePlugin.hygonImageRepository }}:{{ .Values.devicePlugin.hygonImageTag | default .Chart.AppVersion }}\"/g" ./charts/hami/templates/device-plugin/daemonsethygon.yaml
-elif [ $os == "Linux" ]; then
-   sed -i  "s/{{ .Values.devicePlugin.hygonimage }}/\"{{ .Values.devicePlugin.registry }}\/{{ .Values.devicePlugin.hygonImageRepository }}:{{ .Values.devicePlugin.hygonImageTag | default .Chart.AppVersion }}\"/g" ./charts/hami/templates/device-plugin/daemonsethygon.yaml
-fi
 
 # set icon
 yq e '
@@ -329,5 +309,13 @@ yq -i '.devicePlugin.deviceMemoryScaling=1.0' charts/hami/values.yaml
 yq -i '.hami.devicePlugin.deviceMemoryScaling=1.0' values.yaml
 
 # fix version to 2.3.11
-yq -i '.hami.version="v2.3.11"' values.yaml
-yq -i '.version="v2.3.11"' charts/hami/values.yaml
+#yq -i '.hami.version="v2.3.11"' values.yaml
+#yq -i '.version="v2.3.11"' charts/hami/values.yaml
+
+# update devicePlugin.registry to release.daocloud.io, from 2.5.1 version use hami repo
+#yq -i '.hami.devicePlugin.registry="release.daocloud.io"' values.yaml
+#yq -i '.devicePlugin.registry="release.daocloud.io"' charts/hami/values.yaml
+
+
+yq -i '.hami.scheduler.kubeScheduler.imageTag="v1.28.0"' values.yaml
+yq -i '.hami.scheduler.kubeScheduler.imageTag="v1.28.0"' charts/hami/values.yaml

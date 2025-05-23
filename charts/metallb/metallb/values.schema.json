@@ -107,6 +107,11 @@
             "default": {},
             "title": "MetalLB ARP Mode",
             "description": "Metallb supports ARP and BGP modes to declare LoadBalancer IPs. the BGP mode is complex to configure and requires hardware support (such as BGP Router). If you want to configure BGP. Please refer to https://metallb.universe.tf/configuration/_advanced_bgp_configuration",
+            "required": [
+                "enabled",
+                "ipAddressPools",
+                "arp"
+            ],
             "properties": {
                 "enabled": {
                     "type": "boolean",
@@ -119,6 +124,12 @@
                     "title": "Loadbalancer IP Address Pool Settings",
                     "description": "MetalLB assigns ip addresses from the IPAddressPool to LoadBalancer Service",
                     "properties": {
+                        "shared": {
+                            "type": "boolean",
+                            "default": false,
+                            "title": "Shared Default IPPool",
+                            "description": "when enabled, tha all ips of the ippool are shared ip."
+                        },
                         "addresses": {
                             "type": "array",
                             "title": "Pool Address List",
@@ -126,9 +137,7 @@
                             "items": {
                                 "type": "string"
                             },
-                            "default": [
-                                "192.168.10.100-192.168.10.200"
-                            ],
+                            "default": [],
                             "examples": [
                                 "192.168.10.0/24",
                                 "172.168.1.1-172.168.1.10",
@@ -150,6 +159,10 @@
                             "type": "object",
                             "title": "NodeSelectors",
                             "description": "NodeSelectors allows to limit the nodes to announce as next hops for the LoadBalancer IP. When empty, all the nodes having are announced as next hops",
+                            "required": [
+                                "key",
+                                "value"
+                            ],
                             "properties": {
                                 "key": {
                                     "type": "string",

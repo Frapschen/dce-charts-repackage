@@ -51,6 +51,8 @@ redisNewTag=${redisTag//-alpine/}
 
 redisHaProxyTag=${haproxyImageTag//-alpine/}
 
+yq -i '.kubeVersion=">=1.23.0-0"' Chart.yaml
+
 yq -i '
   .argo-cd.global.image.registry = "quay.m.daocloud.io" |
   .argo-cd.global.image.repository = "argoproj/argocd" |
@@ -75,8 +77,7 @@ yq -i '
   .argo-cd.redis-ha.sysctlImage.image.registry = "docker.m.daocloud.io" |
   .argo-cd.redis-ha.sysctlImage.image.repository = "library/busybox" |
   .argo-cd.redis-ha.exporter.image.registry = "docker.m.daocloud.io" |
-  .argo-cd.redis-ha.exporter.image.repository = "oliver006/redis_exporter" |
-  .argo-cd.redisSecretInit.image.registry = "quay.m.daocloud.io"
+  .argo-cd.redis-ha.exporter.image.repository = "oliver006/redis_exporter"
 ' values.yaml
 
 
@@ -99,13 +100,11 @@ yq -i "
 
 
 yq -i "
-  .redisSecretInit.image.registry = \"quay.m.daocloud.io\" |
   .redisSecretInit.image.repository = \"argoproj/argocd\" |
   .redisSecretInit.image.tag = \"${globalImageTag}\"
 " charts/argo-cd/values.yaml
 
 yq -i "
-  .argo-cd.redisSecretInit.image.registry = \"quay.m.daocloud.io\" |
   .argo-cd.redisSecretInit.image.repository = \"argoproj/argocd\" |
   .argo-cd.redisSecretInit.image.tag = \"${globalImageTag}\"
 " values.yaml

@@ -28,9 +28,10 @@ data:
                 label: "base"
                 nodeUsageMode: "NORMAL"
                 idleMinutes: 0
+                serviceAccount: {{ if .Values.rbac.install }}{{ template "jenkins.fullname" . }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
                 containers:
                 - name: "base"
-                  image: "{{ include "builder.image" (dict "builder" .Values.Agent.Builder.Base "root" .) -}}"
+                  image: "{{ include "builder.image" (dict "builder" .Values.Agent.Builder.Base "root" . "os" "ubuntu") -}}"
                   command: "cat"
                   args: ""
                   ttyEnabled: true
@@ -46,6 +47,7 @@ data:
                   resourceLimitCpu: "500m"
                   resourceRequestMemory: "400Mi"
                   resourceLimitMemory: "1536Mi"
+                  command: "/usr/local/bin/jenkins-agent"
                 workspaceVolume:
                   emptyDirWorkspaceVolume:
                     memory: false
@@ -87,9 +89,10 @@ data:
                 label: "nodejs"
                 nodeUsageMode: "EXCLUSIVE"
                 idleMinutes: 0
+                serviceAccount: {{ if .Values.rbac.install }}{{ template "jenkins.fullname" . }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
                 containers:
                 - name: "nodejs"
-                  image: "{{ include "builder.image" ( dict "builder" .Values.Agent.Builder.NodeJs16 "root" .) -}}"
+                  image: "{{ include "builder.image" (dict "builder" .Values.Agent.Builder.NodeJs "root" . "os" "ubuntu") -}}"
                   command: "cat"
                   args: ""
                   ttyEnabled: true
@@ -105,6 +108,7 @@ data:
                   resourceLimitCpu: "500m"
                   resourceRequestMemory: "400Mi"
                   resourceLimitMemory: "1536Mi"
+                  command: "/usr/local/bin/jenkins-agent"
                 workspaceVolume:
                   emptyDirWorkspaceVolume:
                     memory: false
@@ -152,9 +156,10 @@ data:
                 label: "maven"
                 nodeUsageMode: "EXCLUSIVE"
                 idleMinutes: 0
+                serviceAccount: {{ if .Values.rbac.install }}{{ template "jenkins.fullname" . }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
                 containers:
                 - name: "maven"
-                  image: "{{ include "builder.image" ( dict "builder" .Values.Agent.Builder.Maven "root" .) -}}"
+                  image: "{{ include "builder.image" ( dict "builder" .Values.Agent.Builder.Maven "root" . "os" "ubuntu") -}}"
                   command: "cat"
                   args: ""
                   ttyEnabled: true
@@ -170,6 +175,7 @@ data:
                   resourceLimitCpu: "500m"
                   resourceRequestMemory: "400Mi"
                   resourceLimitMemory: "1536Mi"
+                  command: "/usr/local/bin/jenkins-agent"
                 workspaceVolume:
                   emptyDirWorkspaceVolume:
                     memory: false
@@ -220,21 +226,15 @@ data:
                             path: settings.xml
                     securityContext:
                       fsGroup: 1000
-
-              - name: "mavenjdk11"
-                label: "mavenjdk11"
-                inheritFrom: "maven"
-                containers:
-                - name: "maven"
-                  image: "{{ include "builder.image" ( dict "builder" .Values.Agent.Builder.Mavenjdk11 "root" .) -}}"
               - name: "go"
                 namespace: "{{ default .Release.Namespace .Values.Agent.WorkerNamespace }}"
                 label: "go"
                 nodeUsageMode: "EXCLUSIVE"
                 idleMinutes: 0
+                serviceAccount: {{ if .Values.rbac.install }}{{ template "jenkins.fullname" . }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
                 containers:
                 - name: "go"
-                  image: "{{ include "builder.image" ( dict "builder" .Values.Agent.Builder.Golang "root" .) -}}"
+                  image: "{{ include "builder.image" (dict "builder" .Values.Agent.Builder.Golang "root" . "os" "ubuntu") -}}"
                   command: "cat"
                   args: ""
                   ttyEnabled: true
@@ -250,6 +250,7 @@ data:
                   resourceLimitCpu: "500m"
                   resourceRequestMemory: "400Mi"
                   resourceLimitMemory: "1536Mi"
+                  command: "/usr/local/bin/jenkins-agent"
                 workspaceVolume:
                   emptyDirWorkspaceVolume:
                     memory: false
@@ -294,9 +295,10 @@ data:
                 label: "python"
                 nodeUsageMode: "EXCLUSIVE"
                 idleMinutes: 0
+                serviceAccount: {{ if .Values.rbac.install }}{{ template "jenkins.fullname" . }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
                 containers:
                 - name: "python"
-                  image: "{{- include "builder.image" ( dict "builder" .Values.Agent.Builder.Python "root" .) }}"
+                  image: "{{ include "builder.image" (dict "builder" .Values.Agent.Builder.Python "root" . "os" "ubuntu") -}}"
                   command: "cat"
                   args: ""
                   ttyEnabled: true
@@ -312,6 +314,7 @@ data:
                   resourceLimitCpu: "500m"
                   resourceRequestMemory: "400Mi"
                   resourceLimitMemory: "1536Mi"
+                  command: "/usr/local/bin/jenkins-agent"
                 workspaceVolume:
                   emptyDirWorkspaceVolume:
                     memory: false
@@ -354,16 +357,10 @@ data:
                           ephemeral-storage: "10Gi"
                     securityContext:
                       fsGroup: 1000
-
       securityRealm:
       authorizationStrategy: loggedInUsersCanDoAnything
-
     unclassified:
       location:
         url: {{ include "location.url" . }}
-      gitLabServers:
-        servers:
-        - name: "https://gitlab.com"
-          serverUrl: "https://gitlab.com"
       eventDispatcher:
         receiver: {{ include "jenkins.event.receiver" . | quote }}

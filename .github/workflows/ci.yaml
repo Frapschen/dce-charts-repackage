@@ -163,9 +163,9 @@ jobs:
           for PROJECT in ${{ steps.check_change.outputs.changed_project }} ; do
               source ${BASE}/charts/${PROJECT}/config && [ "${NO_IMAGE}" == "true" ] && continue
               CHART_PATH=${BASE}/charts/${PROJECT}/${PROJECT}
-              if helm template test ${CHART_PATH} | grep ' image: ' | cut -d ":" -f2,3 | grep -v "daocloud" &>/dev/null ; then
+              if helm template test ${CHART_PATH} | grep ' image: ' | grep -v "{{"  | cut -d ":" -f2,3 | grep -v "daocloud" &>/dev/null ; then
                   echo "error, ${PROJECT} image is not in daocloud repo"
-                  helm template test ${CHART_PATH} | grep ' image: ' | cut -d ":" -f2,3 | grep -v "daocloud"
+                  helm template test ${CHART_PATH} | grep ' image: ' | grep -v "{{"  | cut -d ":" -f2,3 | grep -v "daocloud"
                   exit 1
               fi
           done
@@ -223,6 +223,29 @@ jobs:
                   git diff
                   echo "error, after 'make build_chart', chart is not updated"
                   exit 1
+              fi
+          done
+      - name: run validate schema test
+        run: |
+          BASE=$PWD
+          python -m unittest ${BASE}/scripts/validate_schema_keys/test_validate.py -v || { echo "error, failed to run test script" ; exit 1 ; }
+      - name: validate schema for value
+        run: |
+          BASE=$PWD
+          for PROJECT in ${{ steps.check_change.outputs.changed_project }} ; do
+              CHART_PATH=charts/${PROJECT}/${PROJECT}
+              SCHEMA_FILE=${CHART_PATH}/${{ env.SCHEMA_FILE_NAME }}
+              PARENT_SCHEMA_FILE=charts/${PROJECT}/parent/${{ env.SCHEMA_FILE_NAME }}
+              [ -f ${PARENT_SCHEMA_FILE} ] && SCHEMA_FILE=${PARENT_SCHEMA_FILE}
+          
+              python ${BASE}/scripts/validate_schema_keys/validate.py ${SCHEMA_FILE} ${CHART_PATH}/values.yaml
+              [ $? -eq 0 ] || { echo "error, failed to validate ${CHART_PATH}/values.yaml with ${SCHEMA_FILE}" ; exit 1 ; } 
+          
+              PROJECT_SRC_CONFIG_PATH=charts/${PROJECT}/config
+              source $PROJECT_SRC_CONFIG_PATH
+              if [ -n "${APPEND_VALUES_FILE}" ] && [ -s ${PROJECT_SRC_DIR}/${APPEND_VALUES_FILE} ] ; then
+                    python ${BASE}/scripts/validate_schema_keys/validate.py ${SCHEMA_FILE} ${PROJECT_SRC_DIR}/${APPEND_VALUES_FILE}
+                    [ $? -eq 0 ] || { echo "error, failed to validate ${PROJECT_SRC_DIR}/${APPEND_VALUES_FILE} with ${SCHEMA_FILE}" ; exit 1 ; }
               fi
           done
 

@@ -37,7 +37,7 @@ spec:
           imagePullPolicy: {{ .Values.scheduler.kubeScheduler.imagePullPolicy | quote }}
           command:
             - kube-scheduler
-            {{- if ge (.Values.scheduler.kubeScheduler.imageTag | substr 3 5| atoi) 22}}
+             {{- if ge (regexReplaceAll "[^0-9]" .Capabilities.KubeVersion.Minor "" | int) 22 }}
             {{- range .Values.scheduler.kubeScheduler.extraNewArgs }}
             - {{ . }}
             {{- end }}
@@ -50,38 +50,56 @@ spec:
             - --leader-elect={{ .Values.scheduler.leaderElect }}
             - --leader-elect-resource-name={{ .Values.schedulerName }}
             - --leader-elect-resource-namespace={{ .Release.Namespace }}
+          resources:
+          {{- toYaml .Values.scheduler.kubeScheduler.resources | nindent 12 }}
           resources: {{ toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: scheduler-config
               mountPath: /config
-        {{- end }}      
+        {{- end }}
+          {{- if .Values.scheduler.livenessProbe }}
+          livenessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /healthz
+              port: 10259
+              scheme: HTTPS
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 15
+          {{- end }}
         - name: vgpu-scheduler-extender
           image: "{{ .Values.scheduler.extender.registry }}/{{ .Values.scheduler.extender.repository }}:{{ .Values.version }}"
           imagePullPolicy: {{ .Values.scheduler.extender.imagePullPolicy | quote }}
+          env:
+          {{- if .Values.global.managedNodeSelectorEnable }}
+          {{- range $key, $value := .Values.global.managedNodeSelector }}
+            - name: NODE_SELECTOR_{{ $key | upper | replace "-" "_" }}
+              value: "{{ $value }}"
+          {{- end }}
+          {{- end }}
           command:
             - scheduler
-            - --resource-name={{ .Values.resourceName }}
-            - --resource-mem={{ .Values.resourceMem }}
-            - --resource-cores={{ .Values.resourceCores }}
-            - --resource-mem-percentage={{ .Values.resourceMemPercentage }}
-            - --resource-priority={{ .Values.resourcePriority }}
             - --http_bind=0.0.0.0:443
             - --cert_file=/tls/tls.crt
             - --key_file=/tls/tls.key
             - --scheduler-name={{ .Values.schedulerName }}
             - --metrics-bind-address={{ .Values.scheduler.metricsBindAddress }}
-            - --default-mem={{ .Values.scheduler.defaultMem }}
-            - --default-gpu={{ .Values.scheduler.defaultGPUNum }}
-            - --default-cores={{ .Values.scheduler.defaultCores }}
-            - --iluvatar-memory={{ .Values.iluvatarResourceMem }}
-            - --iluvatar-cores={{ .Values.iluvatarResourceCore }}
-            - --cambricon-mlu-name={{ .Values.mluResourceName }}
-            - --cambricon-mlu-memory={{ .Values.mluResourceMem }}
-            - --cambricon-mlu-cores={{ .Values.mluResourceCores }}
-            - --ascend-name={{ .Values.ascendResourceName }}
-            - --ascend-memory={{ .Values.ascendResourceMem }}
             - --node-scheduler-policy={{ .Values.scheduler.defaultSchedulerPolicy.nodeSchedulerPolicy }}
             - --gpu-scheduler-policy={{ .Values.scheduler.defaultSchedulerPolicy.gpuSchedulerPolicy }}
+            - --device-config-file=/device-config.yaml
+            {{- if .Values.devices.ascend.enabled }}
+            - --enable-ascend=true
+            {{- end }}
+            {{- if .Values.scheduler.nodeLabelSelector }}
+            - --node-label-selector={{- $first := true -}}
+              {{- range $key, $value := .Values.scheduler.nodeLabelSelector -}}
+              {{- if not $first }},{{ end -}}
+              {{- $key }}={{ $value -}}
+              {{- $first = false -}}
+              {{- end -}}
+            {{- end }}
             {{- range .Values.scheduler.extender.extraArgs }}
             - {{ . }}
             {{- end }}
@@ -89,10 +107,26 @@ spec:
             - name: http
               containerPort: 443
               protocol: TCP
+          resources:
+          {{- toYaml .Values.scheduler.extender.resources | nindent 12 }}
           resources: {{ toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: tls-config
               mountPath: /tls
+            - name: device-config
+              mountPath: /device-config.yaml
+              subPath: device-config.yaml
+          {{- if .Values.scheduler.livenessProbe }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 443
+              scheme: HTTPS
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 5
+          {{- end }}
       volumes:
         - name: tls-config
           secret:
@@ -100,12 +134,15 @@ spec:
         {{- if .Values.scheduler.kubeScheduler.enabled }}
         - name: scheduler-config
           configMap:
-            {{- if ge (.Values.scheduler.kubeScheduler.imageTag | substr 3 5| atoi) 22 }}
+            {{- if ge (regexReplaceAll "[^0-9]" .Capabilities.KubeVersion.Minor "" | int) 22 }}
             name: {{ template "hami-vgpu.scheduler" . }}-newversion
             {{- else }}
             name: {{ template "hami-vgpu.scheduler" . }}
             {{- end }}
         {{- end }}
+        - name: device-config
+          configMap:
+            name: {{ include "hami-vgpu.scheduler" . }}-device
       {{- if .Values.scheduler.nodeSelector }}
       nodeSelector: {{ toYaml .Values.scheduler.nodeSelector | nindent 8 }}
       {{- end }}

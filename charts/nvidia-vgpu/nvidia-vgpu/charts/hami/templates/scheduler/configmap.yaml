@@ -24,6 +24,22 @@ data:
                     "insecure": true
                 },
                 "managedResources": [
+                    {{- if .Values.devices.ascend.enabled }}
+                    {{- range .Values.devices.ascend.customresources }}
+                    {
+                      "name": "{{ . }}",
+                      "ignoredByScheduler": true
+                    },
+                    {{- end }}
+                    {{- end }}
+                    {{- if .Values.devices.mthreads.enabled }}
+                    {{- range .Values.devices.mthreads.customresources }}
+                    {
+                      "name": "{{ . }}",
+                      "ignoredByScheduler": true
+                    },
+                    {{- end }}
+                    {{- end }}
                     {
                         "name": "{{ .Values.resourceName }}",
                         "ignoredByScheduler": true
@@ -62,14 +78,6 @@ data:
                     },
                     {
                         "name": "{{ .Values.iluvatarResourceName }}",
-                        "ignoredByScheduler": true
-                    },
-                    {
-                        "name": "{{ .Values.ascendResourceMem }}",
-                        "ignoredByScheduler": true
-                    },
-                    {
-                        "name": "{{ .Values.ascendResourceName }}",
                         "ignoredByScheduler": true
                     }
                 ],

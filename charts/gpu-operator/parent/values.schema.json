@@ -5,6 +5,14 @@
         "gpu-operator": {
             "type": "object",
             "properties": {
+                "systemOS": {
+                    "type": "string",
+                    "enum": [
+                        "ubuntu22.04",
+                        "ubuntu20.04",
+                        "other"
+                    ]
+                },
                 "operator": {
                     "type": "object",
                     "properties": {
@@ -30,6 +38,9 @@
                         "enabled": {
                             "type": "boolean"
                         },
+                        "usePrecompiled":  {
+                            "type": "boolean"
+                        },
                         "image": {
                             "type": "string"
                         },
@@ -46,6 +57,17 @@
                                     "type": "string"
                                 }
                             }
+                        },
+                        "rdma": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "useHostMofed": {
+                                    "type": "boolean"
+                                }
+                            }
                         }
                     }
                 },
@@ -54,15 +76,6 @@
                     "properties": {
                         "enabled": {
                             "type": "boolean"
-                        },
-                        "image": {
-                            "type": "string"
-                        },
-                        "repository": {
-                            "type": "string"
-                        },
-                        "version": {
-                            "type": "string"
                         }
                     }
                 },
@@ -79,7 +92,8 @@
                         }
                     }
                 }
-            }
+            },
+            "description": "After installation, the default mode is full GPU. If you need to switch to MIG or vGPU, please go to the appropriate node to make the switch."
         }
     }
 }
