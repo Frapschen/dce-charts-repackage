@@ -62,12 +62,25 @@ spec:
                 description: Port specifies the port number for communication
                 format: int32
                 type: integer
+              pxeBootType:
+                description: PXE boot type, either "ipmi" or "redfish"
+                enum:
+                - ipmi
+                - redfish
+                type: string
               secretName:
                 description: SecretName is the name of the secret containing credentials
                 type: string
               secretNamespace:
                 description: SecretNamespace is the namespace of the secret containing
                   credentials
+                type: string
+              type:
+                default: redfish
+                description: Type specifies the endpoint type, either redfish or ssh
+                enum:
+                - redfish
+                - ssh
                 type: string
             required:
             - ipAddr

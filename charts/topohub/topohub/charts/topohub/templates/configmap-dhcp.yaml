@@ -7,6 +7,9 @@ metadata:
 data:
   dnsmasq.conf.tmpl: |
     # Basic DHCP configuration
+    {{ "{{ if .EnableDhcpTrustedOnly }}" }}
+    dhcp-ignore=tag:!trusted
+    {{ "{{ end }}" }}
     dhcp-authoritative
     dhcp-leasefile={{ "{{ .LeaseFile }}" }}
     log-facility={{ "{{ .LogFile }}" }}
@@ -38,8 +41,7 @@ data:
     tftp-root={{ "{{ .TftpServerDir }}" }}
     
     # PXE boot menu
-    dhcp-match=set:efi-x86_64,option:client-arch,7
-    dhcp-boot=tag:efi-x86_64,{{ "{{ .PxeEfiInTftpServerDir }}" }}/core.efi
+    dhcp-boot={{ "{{ .PxeEfiInTftpServerDir }}" }}/core.efi
     {{ "{{ end }}" }}
 
     
@@ -48,7 +50,7 @@ data:
     dhcp-option=67,http://{{ "{{ .SelfIP }}" }}/ztp/ztp.json
     {{ "{{ end }}" }}
 
-    conf-file={{ "{{ .HostIpBindingsConfigPath }}" }}
+    dhcp-hostsfile={{ "{{ .HostIpBindingsConfigPath }}" }}
 
     # Additional options
     # Disable DNS server functionality

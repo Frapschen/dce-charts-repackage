@@ -181,7 +181,6 @@ webhooks:
     - v1
     operations:
     - CREATE
-    - UPDATE
     resources:
     - pods
   sideEffects: None
@@ -220,7 +219,6 @@ webhooks:
     operations:
     - CREATE
     - UPDATE
-    - DELETE
     resources:
     - spidersubnets
   sideEffects: None
@@ -247,7 +245,6 @@ webhooks:
     operations:
     - CREATE
     - UPDATE
-    - DELETE
     resources:
     - spiderippools
   sideEffects: None
