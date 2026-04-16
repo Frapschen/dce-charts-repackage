@@ -1,0 +1,1 @@
+- "{{ .inferencepool.inferenceExtension.image.registry }}/{{ .inferencepool.inferenceExtension.image.repository }}:{{ .inferencepool.inferenceExtension.image.tag }}"
