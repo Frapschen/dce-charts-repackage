@@ -3,7 +3,6 @@ name: Manually Release Chart
 env:
   MERGE_BRANCH: gh-pages
   PR_LABEL: pr/release/robot_update_githubpage
-  PR_REVIWER: weizhoublue
   DAOCLOUD_HARBOR_URL: https://release.daocloud.io
 
 on:
@@ -234,6 +233,6 @@ jobs:
           delete-branch: true
           base: ${{ env.MERGE_BRANCH }}
           signoff: true
-          token: ${{ secrets.WELAN_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           labels: ${{ env.PR_LABEL }}
           reviewers: ${{ env.PR_REVIWER }}
