@@ -128,7 +128,8 @@ sync-with-dt: checkBin checkSyncDTTools
 	set -x ; CHART_PATH=$(ROOT_DIR)/charts/$(PROJECT) ; \
 	echo "chart move $(PROJECT) $${VERSION}" ; \
 	mkdir -p _tmp && DIR=_tmp; \
-	VERSION_NORMAL=$${VERSION:1}; \
+	VERSION_NORMAL=$${VERSION#v}; \
+	[[ "$${VERSION_NORMAL}" =~ ^[0-9]+(\.[0-9]+)*$$ ]] || { echo "error, normalized VERSION must contain only numbers and dots: $${VERSION_NORMAL}" ; exit 1 ; } ; \
 	helm dt wrap $${CHART_PATH}/$(PROJECT) --output-file $${DIR}/$(PROJECT)-$${VERSION_NORMAL}.wrap.tgz --platforms linux/amd64 || { echo "error, failed to save charts and images to local" ; exit 1 ; } ; \
 	CONFIG="\
 source:\n\
@@ -151,6 +152,12 @@ checkImages: VERSION=
 checkImages: checkBin
 	@ echo "check $(PROJECT) images registry"
 	set -x ; \
+	HELM_TEST_VALUES="" ; \
+	CHECK_IMAGES_SOURCE_INSTALL=false ; \
+	CONFIG_PATH=$(ROOT_DIR)/charts/$${PROJECT}/config ; \
+	[ -f "$${CONFIG_PATH}" ] && CHECK_IMAGES_SOURCE_INSTALL=$$(source "$${CONFIG_PATH}" ; echo "$${CHECK_IMAGES_SOURCE_INSTALL:-false}") ; \
+	INSTALL_PATH=$(ROOT_DIR)/test/$${PROJECT}/install.sh ; \
+	[ "$${CHECK_IMAGES_SOURCE_INSTALL}" = "true" ] && [ -f "$${INSTALL_PATH}" ] && source "$${INSTALL_PATH}" ; \
 	if [ "$(KIND)" = "OCI" ] ; then \
 		CHART=oci://127.0.0.1:30080/$${PROJECT} ; \
 	else \
@@ -158,8 +165,8 @@ checkImages: checkBin
 		helm search repo chart-museum --devel -l --kubeconfig $(KIND_KUBECONFIG) ; \
 		CHART=chart-museum/$${PROJECT} ; \
 	fi ; \
-	helm template test $${CHART} --version $${VERSION} --kubeconfig $(KIND_KUBECONFIG) | grep " image: " ; \
-	IMAGE_LIST=` helm template test $${CHART} --version $${VERSION} | grep " image: " | tr -d "'" | tr -d '"' | tr -d '-' | grep -v " image: {{ " | awk '{print $$2}' | uniq ` ;\
+	helm template test $${CHART} --version $${VERSION} --kubeconfig $(KIND_KUBECONFIG) $${HELM_TEST_VALUES} | grep " image: " ; \
+	IMAGE_LIST=` helm template test $${CHART} --version $${VERSION} $${HELM_TEST_VALUES} | grep " image: " | tr -d "'" | tr -d '"' | tr -d '-' | grep -v " image: {{ " | awk '{print $$2}' | uniq ` ;\
 	if [ -z "$${IMAGE_LIST}" ] ; then \
 		echo "error, failed to find image from chart template for $(PROJECT)" ; exit 1 ; \
 	else \
